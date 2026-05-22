@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -27,12 +28,16 @@ public class Product {
     private String name;
 
     @NotNull(message = "Product price cannot be null")
-    @NotBlank(message = "Product price cannot be empty")
+    @DecimalMin("1.0")
     private Double price;
 
     @NotNull(message = "Product sku cannot be null")
     @NotBlank(message = "Product sku cannot be empty")
     private String sku;
+
+    @NotNull(message = "Product category cannot be null")
+    @NotBlank(message = "Product category cannot be empty")
+    private String category;
 
     @OneToMany(mappedBy = "product")
     @JsonManagedReference("inventory-product")
@@ -45,6 +50,14 @@ public class Product {
         this.price = price;
         this.sku = sku;
     }
+
+    public Product(String name, double price, String sku, String category) {
+        this.name = name;
+        this.price = price;
+        this.sku = sku;
+        this.category = category;
+    }
+
     public long getId() {
         return id;
     }
@@ -73,8 +86,16 @@ public class Product {
         return sku;
     }
 
-    public void setKu(String sku) {
+    public void setSku(String sku) {
         this.sku = sku;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public List<Inventory> getInventories() {

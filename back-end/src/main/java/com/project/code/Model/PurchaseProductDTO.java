@@ -7,7 +7,7 @@ public class PurchaseProductDTO {
     private Double price;
     private Integer quantity;
     private Double total;
-
+ 
     // Getters and Setters
 
     public Long getId() {

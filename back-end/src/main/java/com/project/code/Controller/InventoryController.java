@@ -1,30 +1,77 @@
 package com.project.code.Controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.function.support.HandlerFunctionAdapter;
+
+import com.project.code.Model.CombinedRequest;
+import com.project.code.Model.Inventory;
+import com.project.code.Model.Product;
+import com.project.code.Repo.InventoryRepository;
+import com.project.code.Repo.ProductRepository;
+import com.project.code.Service.ServiceClass;
+
+@RestController
+@RequestMapping("/inventory")
 public class InventoryController {
-// 1. Set Up the Controller Class:
-//    - Annotate the class with `@RestController` to indicate that this is a REST controller, which handles HTTP requests and responses.
-//    - Use `@RequestMapping("/inventory")` to set the base URL path for all methods in this controller. All endpoints related to inventory will be prefixed with `/inventory`.
 
+    @Autowired
+    private ProductRepository productRepository;
 
-// 2. Autowired Dependencies:
-//    - Autowire necessary repositories and services:
-//      - `ProductRepository` will be used to interact with product data (i.e., finding, updating products).
-//      - `InventoryRepository` will handle CRUD operations related to the inventory.
-//      - `ServiceClass` will help with the validation logic (e.g., validating product IDs and inventory data).
+    @Autowired
+    private InventoryRepository inventoryRepository;
 
+    @Autowired
+    private ServiceClass serviceClass;
 
-// 3. Define the `updateInventory` Method:
-//    - This method handles HTTP PUT requests to update inventory for a product.
-//    - It takes a `CombinedRequest` (containing `Product` and `Inventory`) in the request body.
-//    - The product ID is validated, and if valid, the inventory is updated in the database.
-//    - If the inventory exists, update it and return a success message. If not, return a message indicating no data available.
+    @PutMapping("/updateInventory")
+    public Map<String, String> updateInventory(@RequestBody CombinedRequest request){
+        Map<String, String> message = new HashMap<>();
 
+        Product product = request.getProduct();
+        Inventory inventoryOBJ = request.getInventory();
+
+        if(serviceClass.validateProductId(product.getId())){
+            Inventory inventory = inventoryRepository
+            .findByProductIdandStoreId(product.getId(), inventoryOBJ.getStore().getId());
+
+            if(inventory != null){
+                product.setId(inventory.getProduct().getId());
+                inventory.setProduct(product);
+                inventoryRepository.save(inventory);
+                message.put("Success","Successfully updated product");
+                return message;
+            }else message.put("Error", "No data Available");
+        }else message.put("Error", "Product does not exist");
+
+        return message;
+
+    }
 
 // 4. Define the `saveInventory` Method:
 //    - This method handles HTTP POST requests to save a new inventory entry.
 //    - It accepts an `Inventory` object in the request body.
 //    - It first validates whether the inventory already exists. If it exists, it returns a message stating so. If it doesn’t exist, it saves the inventory and returns a success message.
+    @PostMapping("/saveInventory")
+    public Map<String, String> saveInventory(@RequestBody Inventory inventory){
+        Map<String,String> message = new HashMap<>();
 
+        if(serviceClass.validateInventory(inventory)) 
+            message.put("Error", "Data already exits");
+        else{
+            inventoryRepository.save(inventory);
+            message.put("Success", "Data saved Successfully");
+        }
+        return message;
+    }
 
 // 5. Define the `getAllProducts` Method:
 //    - This method handles HTTP GET requests to retrieve products for a specific store.
