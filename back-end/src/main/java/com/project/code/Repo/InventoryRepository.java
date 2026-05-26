@@ -16,7 +16,7 @@ import jakarta.transaction.Transactional;
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     @Query("SELECT i FROM Inventory i WHERE i.product.id = :productId and i.store.id = :storeId")
-    public Inventory findByProductIdandStoreId(@Param("productId") long productId, @Param("storeId") long storeId);
+    public Inventory findByProductIdandStoreId(@Param("productId") Long productId, @Param("storeId") Long storeId);
 
     public List<Inventory> findByStore_id(Long storeId);
 

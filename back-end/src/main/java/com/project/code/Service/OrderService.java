@@ -88,9 +88,6 @@ public class OrderService {
         return store.orElseThrow(() -> new EntityNotFoundException("store with id: "+id+" not found"));
     }
 
-// 4. **Create OrderDetails**:
-//    - Create a new `OrderDetails` object and set customer, store, total price, and the current timestamp.
-//    - Set the order date using `java.time.LocalDateTime.now()` and save the order with `orderDetailsRepository.save()`.
     public OrderDetails orderdetails(PlaceOrderRequestDTO porder) {
         Customer customer = retrieveCustomer(
             porder.getCustomerName(),
@@ -108,9 +105,6 @@ public class OrderService {
         return orderDetailsRepo.save(order);
     }
 
-// 5. **Create and Save OrderItems**:
-//    - For each product purchased, find the corresponding inventory, update stock levels, and save the changes using `inventoryRepository.save()`.
-//    - Create and save `OrderItem` for each product and associate it with the `OrderDetails` using `orderItemRepository.save()`.
     private List<OrderItem> createOrderItems(OrderDetails order, List<PurchaseProductDTO> purchaseProductDTOs) {
         List<OrderItem> orderItems = new ArrayList<>();
 
