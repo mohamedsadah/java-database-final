@@ -26,13 +26,6 @@ public class ReviewController {
     @Autowired
     private ReviewRepository reviewRepository;
 
-// 3. Define the `getReviews` Method:
-//    - Annotate with `@GetMapping("/{storeId}/{productId}")` to fetch reviews for a specific product in a store by `storeId` and `productId`.
-//    - Accept `storeId` and `productId` via `@PathVariable`.
-//    - Fetch reviews using `findByStoreIdAndProductId()` method from `ReviewRepository`.
-//    - Filter reviews to include only `comment`, `rating`, and the `customerName` associated with the review.
-//    - Use `findById(review.getCustomerId())` from `CustomerRepository` to get customer name.
-//    - Return filtered reviews in a `Map<String, Object>` with key `reviews`.
 
     @GetMapping("/{storeId}/{productId}")
     public Map<String, Object> getReviews(@PathVariable Long storeId, @PathVariable Long productId){
