@@ -68,7 +68,7 @@ VALUES
 ('Gadget Central', '707 Gadget Street, Dallas, TX');
 
 
-INSERT INTO inventory (product_id, store_id, stock_Level)
+INSERT INTO inventory (product_id, store_id, stocklevel)
 VALUES
 (1, 1, 50), (2, 2, 30), (3, 3, 40), (4, 4, 20), (5, 5, 70),
 (6, 6, 60), (7, 7, 50), (8, 8, 40), (9, 9, 80), (10, 10, 90),

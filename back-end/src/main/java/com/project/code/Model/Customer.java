@@ -36,7 +36,7 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<OrderItem> orders;
+    private List<OrderDetails> orders;
 
     public Customer() {}
 
@@ -51,13 +51,13 @@ public class Customer {
     public String getName() { return this.name; }
     public String getEmail() { return this.email; }
     public String getPhone() { return this.phone; }
-    public List<OrderItem> getOrders() { return this.orders; }
+    public List<OrderDetails> getOrders() { return this.orders; }
 
     public void setId(long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setEmail(String email) {this.email = email; }
     public void setPhone(String phone) {this.phone = phone; }
-    public void setOrders(List<OrderItem> orders) {
+    public void setOrders(List<OrderDetails> orders) {
         this.orders = orders;
     }
 
