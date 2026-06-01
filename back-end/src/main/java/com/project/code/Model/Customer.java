@@ -34,7 +34,7 @@ public class Customer {
     @NotBlank(message = "Customer Phone number cannot be empty")
     private String phone;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<OrderDetails> orders;
 
